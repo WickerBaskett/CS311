@@ -26,7 +26,9 @@ class Player {
             setGames(0);
         }
 
-        Player(std::string real_name, std::string username, int games_played)
+        Player(const std::string & real_name, 
+               const std::string & username, 
+               const int & games_played)
         {
             setRealName(real_name);
             setUsername(username);
@@ -49,17 +51,17 @@ class Player {
             return int(m_games_played);
         }
 
-        void setRealName(std::string new_name)
+        void setRealName(const std::string & new_name)
         {
             m_real_name = new_name;
         }
 
-        void setUsername(std::string new_name)
+        void setUsername(const std::string & new_name)
         {
             m_username = new_name;
         }
 
-        void setGames(int new_games)
+        void setGames(const int & new_games)
         {
             m_games_played = uint(new_games);
         }
