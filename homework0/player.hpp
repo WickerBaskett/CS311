@@ -1,3 +1,9 @@
+// player.hpp
+// Elliott Lewandowski
+// September 5, 2024
+//
+// For CS311 Homework 0
+// Header for class Player
 
 #ifndef FILE_PLAYER_HPP_INCLUDED
 #define FILE_PLAYER_HPP_INCLUDED
@@ -15,8 +21,8 @@ class Player {
 //****** Player: Constructors ******
         Player() 
         {
-            setRealName("UNKOWN");
-            setUsername("UNKOWN");
+            setRealName("UNKNOWN");
+            setUsername("UNKNOWN");
             setGames(0);
         }
 
@@ -40,7 +46,7 @@ class Player {
 
         int getGames() const
         {
-            return m_games_played;
+            return int(m_games_played);
         }
 
         void setRealName(std::string new_name)
@@ -55,40 +61,52 @@ class Player {
 
         void setGames(int new_games)
         {
-            m_games_played = new_games;
+            m_games_played = uint(new_games);
         }
 
 //****** Player: Member Functions ******
         bool inactive() const
         {
-            bool activity = (m_games_played > 0);
+            bool activity = !(m_games_played > 0);
             return activity;
         }
 
         std::string toString() const
         {
+            std::string out = m_real_name +
+                + " (" + m_username + "): "
+                + std::to_string(m_games_played);
 
+            return out;
         }
 
 //****** Player: Member Operator Overrides ******
         Player & operator++()
         {
-            
+            ++m_games_played;
+            return *this;
         }
 
         Player operator++([[maybe_unused]] int dummy)
         {
-
+            Player save = *this;
+            ++(*this);
+            return save;
         }
 
         Player & operator--()
         {
+            if (m_games_played > 0) 
+                --m_games_played;
+            return *this;
 
         }
 
         Player operator--([[maybe_unused]] int dummy)
         {
-
+            Player save = *this;
+            --(*this);
+            return save;
         }
 
 
