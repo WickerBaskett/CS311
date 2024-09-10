@@ -11,28 +11,31 @@
 #include <string>
 
 class Player {
-//****** Player: Member Variables ******
+
     private:
+//****** Player: Member Variables ******
         std::string m_real_name;
         std::string m_username;
-        uint m_games_played;
+        int m_games_played;
 
     public:
 //****** Player: Constructors ******
         Player() 
+            : m_real_name("UNKNOWN"),
+              m_username("UNKNOWN"),
+              m_games_played(0)
         {
-            setRealName("UNKNOWN");
-            setUsername("UNKNOWN");
-            setGames(0);
+            // Space left inentionally blank
         }
 
         Player(const std::string & real_name, 
                const std::string & username, 
                const int & games_played)
+            : m_real_name(real_name),
+              m_username(username),
+              m_games_played(games_played)
         {
-            setRealName(real_name);
-            setUsername(username);
-            setGames(games_played);
+             // Space left inentionally blank
         }
 
 //****** Player: Getters and Setters ******
@@ -48,7 +51,7 @@ class Player {
 
         int getGames() const
         {
-            return int(m_games_played);
+            return m_games_played;
         }
 
         void setRealName(const std::string & new_name)
@@ -62,8 +65,11 @@ class Player {
         }
 
         void setGames(const int & new_games)
-        {
-            m_games_played = uint(new_games);
+        {   
+            if (new_games >= 0)
+            {
+                m_games_played = new_games;
+            }
         }
 
 //****** Player: Member Functions ******
