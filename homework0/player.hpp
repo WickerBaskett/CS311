@@ -8,7 +8,8 @@
 #ifndef FILE_PLAYER_HPP_INCLUDED
 #define FILE_PLAYER_HPP_INCLUDED
 
-#include <string>
+#include <string>  // For std::string
+#include <cassert> // For assert
 
 class Player {
 
@@ -25,7 +26,7 @@ class Player {
               m_username("UNKNOWN"),
               m_games_played(0)
         {
-            // Space left inentionally blank
+            // No assertions needed here
         }
 
         Player(const std::string & real_name, 
@@ -35,7 +36,7 @@ class Player {
               m_username(username),
               m_games_played(games_played)
         {
-             // Space left inentionally blank
+             assert (m_games_played >= 0);
         }
 
 //****** Player: Getters and Setters ******
@@ -51,6 +52,8 @@ class Player {
 
         int getGames() const
         {
+            assert (m_games_played >= 0);
+
             return m_games_played;
         }
 
@@ -66,6 +69,8 @@ class Player {
 
         void setGames(const int & new_games)
         {   
+            assert (new_games >= 0);
+            
             if (new_games >= 0)
             {
                 m_games_played = new_games;
@@ -75,12 +80,16 @@ class Player {
 //****** Player: Member Functions ******
         bool inactive() const
         {
+            assert (m_games_played >= 0);
+
             bool activity = !(m_games_played > 0);
             return activity;
         }
 
         std::string toString() const
         {
+            assert (m_games_played >= 0);
+
             std::string out = m_real_name +
                 + " (" + m_username + "): "
                 + std::to_string(m_games_played);
@@ -91,12 +100,16 @@ class Player {
 //****** Player: Member Operator Overrides ******
         Player & operator++()
         {
+            assert (m_games_played >= 0);
+
             ++m_games_played;
             return *this;
         }
 
         Player operator++([[maybe_unused]] int dummy)
         {
+            assert (m_games_played >= 0);
+
             Player save = *this;
             ++(*this);
             return save;
@@ -104,6 +117,8 @@ class Player {
 
         Player & operator--()
         {
+            assert (m_games_played >= 0);
+
             if (m_games_played > 0) 
                 --m_games_played;
             return *this;
@@ -112,6 +127,8 @@ class Player {
 
         Player operator--([[maybe_unused]] int dummy)
         {
+            assert (m_games_played >= 0);
+
             Player save = *this;
             --(*this);
             return save;

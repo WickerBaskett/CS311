@@ -7,6 +7,9 @@
 
 #include "player.hpp"
 
+// Asserts for these function are handled in the class methods,
+//   they are not repeated here to remain DRY compliant
+
 std::ostream & operator<<(std::ostream & out, const Player & player)
 {
     out << player.toString();
