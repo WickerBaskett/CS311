@@ -1,4 +1,9 @@
-
+// masarray.hpp
+// Elliott Lewandowski
+// September 18, 2024
+//
+// For CS311 Homework 2
+// Header for class MSArray
 
 #ifndef FILE_MSARRY_HPP_INCLUDED
 #define FILE_MSARRY_HPP_INCLUDED
@@ -70,9 +75,9 @@ class MSArray
 
         }
 
-        size_type size()
+        size_type size() const
         {
-            return m_size;
+            
         }
 
         ValType * begin()
@@ -95,32 +100,32 @@ class MSArray
 
         }
 
-        bool operator==(const MSArray<ValType> & rhs)
+        bool operator==(const MSArray<ValType> & rhs) const
         {
 
         }
 
-        bool operator!=(const MSArray<ValType> & rhs)
+        bool operator!=(const MSArray<ValType> & rhs) const
         {
 
         }
 
-        bool operator<(const MSArray<ValType> & rhs)
+        bool operator<(const MSArray<ValType> & rhs) const
         {
 
         }
 
-        bool operator<=(const MSArray<ValType> & rhs)
+        bool operator<=(const MSArray<ValType> & rhs) const
         {
 
         }
 
-        bool operator>(const MSArray<ValType> & rhs)
+        bool operator>(const MSArray<ValType> & rhs) const
         {
 
         }
 
-        bool operator>=(const MSArray<ValType> & rhs)
+        bool operator>=(const MSArray<ValType> & rhs) const
         {
 
         }
