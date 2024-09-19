@@ -1,6 +1,6 @@
 // masarray.hpp
 // Elliott Lewandowski
-// September 18, 2024
+// September 19, 2024
 //
 // For CS311 Homework 2
 // Header for class MSArray
@@ -8,10 +8,12 @@
 #ifndef FILE_MSARRY_HPP_INCLUDED
 #define FILE_MSARRY_HPP_INCLUDED
 
-#include <cstddef>
 #include <cassert>   // For assert
 #include <algorithm> // For std::fill
 
+// Invariants:
+//      m_size >= 0
+//      m_arrayptr != nullptr
 template <typename ValType>
 class MSArray 
 { 
@@ -28,17 +30,17 @@ class MSArray
         }
 
         // 1-param ctor
-        MSArray(int num_elements) 
+        MSArray(u_int num_elements) 
             : m_arrayptr(new ValType[num_elements]),
-              m_size(size_t(num_elements))
+              m_size(num_elements)
         {
 
         }
 
         // 2-param ctor
-        MSArray(int num_elements, ValType value)
+        MSArray(u_int num_elements, ValType value)
             : m_arrayptr(new ValType[num_elements]),
-              m_size(size_t(num_elements))
+              m_size(num_elements)
         {
             std::fill(m_arrayptr, m_arrayptr + m_size, value);
         }
@@ -81,36 +83,52 @@ class MSArray
             return *this;
         }
 
+        // Pre:
+        //    index is in range [0, m_size)
         ValType & operator [](size_type index)
         {
+            assert(index < m_size);
             return m_arrayptr[index];
         }
 
+        // Pre:
+        //    index is in range [0, m_size)
         const ValType & operator [](size_type index) const
         {
+            assert(index < m_size);
             return m_arrayptr[index];
         }
 
+        // Pre:
+        //    None
         size_type size() const
         {
             return m_size;
         }
 
+        // Pre:
+        //    None
         ValType * begin()
         {
             return m_arrayptr;
         }
 
+        // Pre:
+        //    None
         const ValType * begin() const
         {
             return m_arrayptr;
         }
 
+        // Pre:
+        //    None
         ValType * end()
         {
             return begin() + m_size;
         }
 
+        // Pre:
+        //    None
         const ValType * end() const
         {
             return begin() + m_size;
@@ -120,7 +138,10 @@ class MSArray
         ValType *  m_arrayptr;
         size_t m_size;
         
-
+        // Acknowledgment: This function was written by Glenn Chappell
+        //      in his lecture notes on Invisible Functions II
+        // Pre:
+        //    Other must be a valid MSArray Object
         void mswap(MSArray & other) noexcept
         {
             std::swap(m_arrayptr, other.m_arrayptr);
@@ -128,6 +149,8 @@ class MSArray
         }
 }; // End of Class MSArray
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator<(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
@@ -151,24 +174,32 @@ bool operator<(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
     return (lhs.size() < rhs.size());
 }
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator<=(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
     return !(rhs < lhs);
 }
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator>(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
     return (rhs < lhs);
 }
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator>=(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
     return !(lhs < rhs);
 }
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator==(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
@@ -196,6 +227,8 @@ bool operator==(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
     return true;
 }
 
+// Pre:
+//    lhs and rhs must have same ValType
 template <typename ValType>
 bool operator!=(const MSArray<ValType> & lhs, const MSArray<ValType> & rhs)
 {
