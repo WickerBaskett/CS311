@@ -49,7 +49,7 @@ void printBoard(vector<vector<int>> board)
 //   if dir is not 0 we are testing a horizontal domino
 // preconditions:
 //      tile must be passed as a (y,x) pair where x && y >= 0
-const bool onBoard(const pair<int, int> & dim, const pair<int, int> & tile, int dir)
+const bool validDomino(const vector<vector<int>> board, const pair<int, int> & dim, const pair<int, int> & tile, int dir)
 {
 
     // If the initial square of the domino is off the board we dont need any more logic
@@ -67,7 +67,10 @@ const bool onBoard(const pair<int, int> & dim, const pair<int, int> & tile, int 
         sec_tile.second += 1;
     }
 
-    return ((sec_tile.first < dim.first) && (sec_tile.second < dim.second));
+    if ((sec_tile.first >= dim.first) || (sec_tile.second >= dim.second))
+        return false;
+    
+    return (board[sec_tile.first][sec_tile.second] == 0);
 }
 
 int holeyDTCount(int dim_x, int dim_y,
@@ -84,7 +87,7 @@ int holeyDTCount(int dim_x, int dim_y,
     if (squares_left % 2 != 0)
         return 0;
 
-    // Board stores coordinates as [y][x]
+    // Board stores coordinates as [y][x], a 0 is an empty tile, a 1 is a filled tile
     vector<vector<int>> board(dim_y, vector<int>(dim_x, 0));
 
     // Fill in the holes on the board
@@ -92,8 +95,6 @@ int holeyDTCount(int dim_x, int dim_y,
     board[hole2_y][hole2_x] = 1;
 
     pair<int, int> dim(dim_y, dim_x);
-
-    printBoard(board);
 
     return holeyDTCount_recurse(board, dim, squares_left);
 }
@@ -132,14 +133,12 @@ int holeyDTCount_recurse(vector<vector<int>> & board, const pair<int, int> & dim
     bool tile_placed = false;
 
     // See if we can place a vertical domino
-    if (onBoard(dim, tile, 0))
+    if (validDomino(board, dim, tile, 0))
     {
         tile_placed = true;
 
         board[tile.first][tile.second] = 1;
         board[tile.first + 1][tile.second] = 1;
-
-        printBoard(board);
 
         sum += holeyDTCount_recurse(board, dim, squares_left - 2);
 
@@ -148,14 +147,12 @@ int holeyDTCount_recurse(vector<vector<int>> & board, const pair<int, int> & dim
     }
 
     // See if we can place a horizontal domino
-    if (onBoard(dim, tile, 1))
+    if (validDomino(board, dim, tile, 1))
     {
         tile_placed = true;
 
         board[tile.first][tile.second] = 1;
         board[tile.first][tile.second + 1] = 1;
-
-        printBoard(board);
 
         sum += holeyDTCount_recurse(board, dim, squares_left - 2);
 
@@ -168,8 +165,6 @@ int holeyDTCount_recurse(vector<vector<int>> & board, const pair<int, int> & dim
     {
         return 0;
     }
-
-    std::cout << "Current Sum: " << sum << std::endl;
 
     return sum;
 }
