@@ -11,6 +11,6 @@ holeydtcount.o: holeydtcount.cpp holeydtcount.hpp
 
 
 clean:
-	rm -f main
+	rm -f main *.o test
 
 .PHONY: all clean
