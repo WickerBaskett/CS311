@@ -6,9 +6,9 @@ using std::endl;
 
 int main()
 {
-    int sum = holeyDTCount(8,5, 
-                           6,4, 
-                           7,4);
+    int sum = holeyDTCount(8,8, 
+                           2,0, 
+                           3,0);
 
     cout << "Solutions: " << sum << endl;
 }
