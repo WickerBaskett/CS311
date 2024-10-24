@@ -22,7 +22,8 @@ using std::copy;
 
 // Copy ctor
 // See header for info.
-GFSArray::GFSArray(const GFSArray & other)
+template <typename ValType>
+GFSArray<ValType>::GFSArray(const GFSArray & other)
     :_capacity(other._capacity),
      _size(other.size()),
      _data(other._capacity == 0 ? nullptr
@@ -37,7 +38,8 @@ GFSArray::GFSArray(const GFSArray & other)
 
 // Move ctor
 // See header for info.
-GFSArray::GFSArray(GFSArray && other) noexcept
+template <typename ValType>
+GFSArray<ValType>::GFSArray(GFSArray<ValType> && other) noexcept
     :_capacity(other._capacity),
      _size(other._size),
      _data(other._data)
@@ -50,7 +52,8 @@ GFSArray::GFSArray(GFSArray && other) noexcept
 
 // Copy assignment operator
 // See header for info.
-GFSArray & GFSArray::operator=(const GFSArray & other)
+template <typename ValType>
+GFSArray<ValType> & GFSArray<ValType>::operator=(const GFSArray<ValType> & other)
 {
     // TODO: WRITE THIS!!!
     return *this; // DUMMY
@@ -59,7 +62,8 @@ GFSArray & GFSArray::operator=(const GFSArray & other)
 
 // Move assignment operator
 // See header for info.
-GFSArray & GFSArray::operator=(GFSArray && other) noexcept
+template <typename ValType>
+GFSArray<ValType> & GFSArray<ValType>::operator=(GFSArray<ValType> && other) noexcept
 {
     // TODO: WRITE THIS!!!
     return *this; // DUMMY
@@ -68,7 +72,8 @@ GFSArray & GFSArray::operator=(GFSArray && other) noexcept
 
 // resize
 // See header for info.
-void GFSArray::resize(GFSArray::size_type newsize)
+template <typename ValType>
+void GFSArray<ValType>::resize(GFSArray<ValType>::size_type newsize)
 {
     // TODO: WRITE THIS!!!
 }
@@ -76,8 +81,9 @@ void GFSArray::resize(GFSArray::size_type newsize)
 
 // insert
 // See header for info.
-GFSArray::iterator GFSArray::insert(GFSArray::iterator pos,
-                                  GFSArray::value_type item)
+template <typename ValType>
+typename GFSArray<ValType>::iterator GFSArray<ValType>::insert(GFSArray<ValType>::iterator pos,
+                                  GFSArray<ValType>::value_type item)
 {
     // TODO: WRITE THIS!!!
     return begin();  // DUMMY
@@ -86,7 +92,8 @@ GFSArray::iterator GFSArray::insert(GFSArray::iterator pos,
 
 // erase
 // See header for info.
-GFSArray::iterator GFSArray::erase(GFSArray::iterator pos)
+template <typename ValType>
+typename GFSArray<ValType>::iterator GFSArray<ValType>::erase(GFSArray<ValType>::iterator pos)
 {
     // TODO: WRITE THIS!!!
     return begin();  // DUMMY
@@ -95,7 +102,8 @@ GFSArray::iterator GFSArray::erase(GFSArray::iterator pos)
 
 // swap
 // See header for info.
-void GFSArray::swap(GFSArray & other) noexcept
+template <typename ValType>
+void GFSArray<ValType>::swap(GFSArray<ValType> & other) noexcept
 {
     // TODO: WRITE THIS!!!
 }

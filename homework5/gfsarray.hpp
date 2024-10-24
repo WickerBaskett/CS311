@@ -62,13 +62,14 @@
 //     _data points to an array of value_type, allocated with new [],
 //      owned by *this, holding _capacity value_type values -- UNLESS
 //      _capacity == 0, in which case _data may be nullptr.
+template<typename ValType>
 class GFSArray {
 
 // ***** GFSArray: types *****
 public:
 
     // value_type: type of data items
-    using value_type = int;
+    using value_type = ValType;
 
     // size_type: type of sizes & indices
     using size_type = std::size_t;
@@ -106,7 +107,7 @@ public:
 
     // Copy assignment operator
     // ??? Guarantee
-    GFSArray & operator=(const GFSArray & other);
+    GFSArray<ValType> & operator=(const GFSArray<ValType> & other);
 
     // Move assignment operator
     // No-Throw Guarantee
