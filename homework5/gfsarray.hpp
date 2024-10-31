@@ -17,6 +17,8 @@
 // For std::size_t
 #include <algorithm>
 // For std::max
+#include <stdexcept>
+// For std::out_of_range
 
 // *********************************************************************
 // class GFSArray - Class definition
@@ -240,14 +242,22 @@ public:
 
     // insert
     // Pre:
-    //     pos must be a valid iterator for an element of _data
+    //     pos must be a valid iterator for an element of _data,
+    //       we cannot check that this is true in the function
+    //       without moving from O(1) to O(n) so we do not
     // Basic Guarantee
     // Exception-Neutral
     // Exceptions:
-    //      std::bad_alloc, any exceptions thrown by value_type member functions
+    //      std::bad_alloc, std::out_of_range, any exceptions thrown by value_type member functions
     iterator insert(iterator pos,
                     const value_type & item)
     {
+        // Bounds checking on pos, works because iterator is a value_type *
+        if (pos < begin() || pos > end())
+        {
+            throw std::out_of_range("passed pos is out of range");
+        }
+
         // Save index of pos
         std::ptrdiff_t index = std::distance(begin(), pos);
 
@@ -268,7 +278,7 @@ public:
     // Basic Guarantee
     // Exception-Neutral
     // Exceptions:
-    //      std::bad_alloc, any exceptions thrown by value_type member functions
+    //      std::bad_alloc, std::out_of_range, any exceptions thrown by value_type member functions
     iterator erase(iterator pos)
     {
         // Follows std::vectors example, returns last if the array is empty
@@ -276,6 +286,13 @@ public:
         {
             return end();
         }
+
+        // Bounds checking on pos, works because iterator is a value_type *
+        if (pos < begin() || pos > end())
+        {
+            throw std::out_of_range("passed pos is out of range");
+        }
+
         std::rotate(pos, std::next(pos, 1), end());
         resize(_size - 1);
         return pos;
