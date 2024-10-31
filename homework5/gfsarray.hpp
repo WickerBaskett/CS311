@@ -22,6 +22,9 @@
 // class GFSArray - Class definition
 // *********************************************************************
 
+// If a member function is marked with No-Throw Guarantee the function
+//   throws no exceptions so the 'Exceptions: ...' comment has been ommitted
+//   for the sake of readability
 
 // class GFSArray
 // Frightfully Smart Array of int.
@@ -98,7 +101,6 @@ public:
     // Move ctor
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     GFSArray(GFSArray && other) noexcept
         :_capacity(other._capacity),
          _size(other._size),
@@ -125,7 +127,6 @@ public:
     // Move assignment operator
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     GFSArray & operator=(GFSArray && other) noexcept
     {
         swap(other);
@@ -135,7 +136,6 @@ public:
     // Dctor
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     ~GFSArray()
     {
         delete [] _data;
@@ -149,7 +149,6 @@ public:
     //     index is in the range [0, _size - 1]
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     value_type & operator[](size_type index)
     {
         return _data[index];
@@ -165,7 +164,6 @@ public:
     // size
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     size_type size() const noexcept
     {
         return _size;
@@ -174,7 +172,6 @@ public:
     // empty
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     bool empty() const noexcept
     {
         return size() == 0;
@@ -183,7 +180,6 @@ public:
     // begin - non-const & const
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     iterator begin() noexcept
     {
         return _data;
@@ -196,7 +192,6 @@ public:
     // end - non-const & const
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     iterator end() noexcept
     {
         return begin() + size();
@@ -311,7 +306,6 @@ public:
     // swap
     // No-Throw Guarantee
     // Exception-Neutral
-    // Does not throw
     void swap(GFSArray & other) noexcept
     {
         std::swap(_capacity, other._capacity);
