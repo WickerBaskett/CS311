@@ -78,11 +78,14 @@ public:
     //      std::bad_alloc, any exceptions thrown by value_type member functions
     GFSArray(const GFSArray & other)
         :_capacity(other._capacity),
-        _size(other.size())
+        _size(other.size()),
+        _data(nullptr)
     {
         try {
-            _data = (other._capacity == 0) ? nullptr
-                                    : new value_type[other._capacity];
+            if (other._capacity > 0)
+            {
+                _data = new value_type[other._capacity];
+            }
             std::copy(other.begin(), other.end(), begin());
         }
         catch (...)
@@ -109,7 +112,7 @@ public:
     // Copy assignment operator
     // Strong Guarantee
     // Exception-Neutral
-     // Exceptions:
+    // Exceptions:
     //      any exceptions thrown by value_type copy constructor
     GFSArray<ValType> & operator=(const GFSArray<ValType> & other)
     {
@@ -208,6 +211,8 @@ public:
     //      newSize >= 0
     // Strong Guarantee
     // Exception-Neutral
+    // Exceptions:
+    //      std::bad_alloc, any exceptions thrown by value_type member functions
     void resize(size_type newSize)
     {
         if (newSize <= _capacity)
@@ -243,11 +248,13 @@ public:
     //     pos must be a valid iterator for an element of _data
     // Basic Guarantee
     // Exception-Neutral
+    // Exceptions:
+    //      std::bad_alloc, any exceptions thrown by value_type member functions
     iterator insert(iterator pos,
                     const value_type & item)
     {
         // Save index of pos
-        size_type index = std::distance(begin(), pos);
+        std::ptrdiff_t index = std::distance(begin(), pos);
 
         resize(_size + 1);
 
@@ -265,6 +272,8 @@ public:
     //     pos must be a valid iterator for an element of _data
     // Basic Guarantee
     // Exception-Neutral
+    // Exceptions:
+    //      std::bad_alloc, any exceptions thrown by value_type member functions
     iterator erase(iterator pos)
     {
         // Follows std::vectors example, returns last if the array is empty
@@ -280,6 +289,8 @@ public:
     // push_back
     // Basic Guarantee
     // Exception-Neutral
+    // Exceptions:
+    //      std::bad_alloc, any exceptions thrown by value_type member functions
     void push_back(const value_type & item)
     {
         insert(end(), item);
@@ -290,6 +301,8 @@ public:
     //     _size must be at least 1
     // Basic Guarantee
     // Exception-Neutral
+    // Exceptions:
+    //      std::bad_alloc, any exceptions thrown by value_type member functions
     void pop_back()
     {
         erase(end()-1);
