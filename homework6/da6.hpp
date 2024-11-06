@@ -3,11 +3,13 @@
 #define FILE_DA6_HPP_INCLUDED
 
 #include <memory>
-// For std::unique_ptr
+// For std::unique_ptr, std::make_unique
 #include <utility>
 // For std::pair, std::move
 #include <functional>
 // For std::function
+#include <stdexcept>
+// For std::out_of_range
 
 #include "llnode2.hpp"
 // For LLNode2
@@ -17,11 +19,11 @@ void reverseList(std::unique_ptr<LLNode2<ValType>> & head) {
     std::unique_ptr<LLNode2<ValType>> newHead = nullptr;
     std::unique_ptr<LLNode2<ValType>> storage = nullptr;
     
-    while(head != nullptr)
+    while(head)
     {
         storage = std::move(newHead);
         newHead = std::move(head);
-        head = std::move(head->_next);
+        head = std::move(newHead->_next);
         newHead->_next = std::move(storage);
     }
 
@@ -42,7 +44,7 @@ public:
     // size_type: type of sizes & indices
     using size_type = std::size_t;
 
-// ***** SLLMap: Member Functions *****
+// ***** SLLMap: Ctors, Dtor *****
 public:
     // Default Ctor
     SLLMap()                   
@@ -67,40 +69,118 @@ public:
     // Move assignment operator
     SLLMap & operator=(SLLMap && other) = delete;
 
+// ***** SLLMap: General Public Operators *****
+public:
     size_type size() const 
     {
-        // TO-DO: Write this!!!
+        auto curr = _head.get();
+        size_type count(0);
+
+        while(curr != nullptr)
+        {
+            count += 1;
+            curr = curr->_next.get();
+        }
+
+        return count;
     }
 
     bool empty() const 
     {
-        // TO-DO: Write this!!!
+        return !(_head);
     }
 
     bool present(key_type key) const 
     {
-        // TO-DO: Write this!!!
+        auto curr = _head.get();
+
+        while (curr != nullptr)
+        {
+            if (curr->_data.first == key)
+            {
+                return true;
+            }
+            curr = curr->_next.get();
+        }    
+
+        return false;
     }
 
-    data_type & get(key_type key) {
-        // TO-DO: Write this!!!
-    }
-
-    const data_type & get(key_type key) const {
-        // TO-DO: Write this!!!
-    }
-
-    void set(key_type key, data_type data) {
-        // TO-DO: Write this!!!
-    }
-
-    void erase(key_type key) {
-        // TO-DO: Write this!!!
-    }
-
-    void traverse(std::function<void(key_type,data_type)>)
+    data_type & get(key_type key) 
     {
-        // TO-DO: Write this!!!
+        auto curr = _head.get();
+
+        while (curr != nullptr)
+        {
+            if (curr->_data.first == key)
+            {
+                return curr->_data.second;
+            }
+            curr = curr->_next.get();
+        }    
+
+        throw std::out_of_range("Key not found in SLLMap");
+    }
+
+    const data_type & get(key_type key) const 
+    {
+        auto curr = _head.get();
+
+        while (curr != nullptr)
+        {
+            if (curr->_data.first == key)
+            {
+                return curr->_data.second;
+            }
+            curr = curr->_next.get();
+        }    
+
+        throw std::out_of_range("Key not found in SLLMap");
+    }
+
+    void set(key_type key, data_type data) 
+    {
+        auto curr = _head.get();
+
+        while (curr != nullptr)
+        {
+            if (curr->_data.first == key)
+            {
+                curr->_data.second = data;
+                return;
+            }
+            curr = curr->_next.get();
+        }   
+
+        push_front(_head, std::pair(key, data));
+    }
+
+    void erase(key_type key) 
+    {
+        auto curr = _head.get();
+        auto prior = curr;
+
+        while (curr != nullptr)
+        {
+            if (curr->_data.first == key)
+            {
+                prior->_next = std::move(curr->_next);
+                return;
+            }
+            prior = curr;
+            curr = curr->_next.get();
+        } 
+    }
+
+    void traverse(std::function<void(key_type,data_type)> func)
+    {
+        auto curr = _head.get();
+
+        while (curr != nullptr)
+        {
+            func(curr->_data.first, curr->_data.second);
+            curr = curr->_next.get();
+        }  
     }
 
 // ***** SLLMap: data members *****
