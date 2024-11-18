@@ -1,10 +1,12 @@
-// treesort.hpp  SKELETON
-// Glenn G. Chappell
-// 2024-11-11
+// treesort.hpp 
+// Elliott R. Lewandowski
+// 2024-11-18
 //
 // For CS 311 Fall 2024
 // Header for function template treesort
 // There is no associated source file.
+
+// Acknowledgments: Glenn G. Chappell wrote the skeleton for this file
 
 #ifndef FILE_TREESORT_HPP_INCLUDED
 #define FILE_TREESORT_HPP_INCLUDED
@@ -17,20 +19,22 @@
 #include <algorithm>
 // For std::move
 
-#include <iostream>
-// For std::cout, std::endl
-
 // A node in a Binary Search Tree (BST)
+// Class Invariants:
+//   _left/_right are either a unique_ptr to a BSTreeNode or nullptr
+//   _data will always be an initialized ValType
 template<typename ValType>
 struct BSTreeNode {
-    std::unique_ptr<BSTreeNode<ValType>> _left;
     ValType _data;
+    std::unique_ptr<BSTreeNode<ValType>> _left;
     std::unique_ptr<BSTreeNode<ValType>> _right;
 
     // 1- & 2- & 3- param ctor
     // _data is set to data (given). _left/_right is set to left/right, if given, or
     // nullptr if not.
-    // No-Throw Guarantee
+    // Exceptions:
+    //   any exceptions thrown by the constructor of value
+    // Strong Guarantee
     explicit BSTreeNode(const ValType & data,
                      std::unique_ptr<BSTreeNode> left = nullptr,
                      std::unique_ptr<BSTreeNode> right = nullptr)
@@ -38,17 +42,15 @@ struct BSTreeNode {
          _left(std::move(left)),
          _right(std::move(right))
     {}
-
-    // dctor
-    // Iterative: avoid recursive destruction.
-    // No-Throw Guarantee
-    ~BSTreeNode()
-    {
-        // Needs to delete each node to the left and right side
-    }
 };
 
 // Insert a new item into a BST
+// Preconditions:
+//    head must point to a properly allocated BST Node
+// Exceptions:
+//    std::bad_alloc, any exceptions thrown by the constructor of Value
+// Strong Guarantee
+// Exception-Neutral
 template<typename Value>
 void insert(std::unique_ptr<BSTreeNode<Value>> & head,
 const Value & item) 
@@ -73,6 +75,12 @@ const Value & item)
 
 // Copy the contents of a BST to the memory pointed to by first using
 //   an in-order traversal
+// Preconditions:
+//    head must point to a properly allocated BST Node
+//    first must point to memory that is at least as large as
+//       the number of nodes in the BST
+// No-Throw Guarantee
+// Exception-Neutral
 template<typename Value, typename FDIter>
 void inorder_traversal(const std::unique_ptr<BSTreeNode<Value>> & head,
         FDIter & first)
@@ -91,11 +99,12 @@ void inorder_traversal(const std::unique_ptr<BSTreeNode<Value>> & head,
 }
 
 // treesort
-// Sort a given range using Treesort.
-// Pre:
-//     ???
-// Exception safety guarantee:
-//     ???
+// Preconditions:
+//    first and last must define the range [first, last)
+// Exceptions:
+//    std::bad_alloc, any exceptions thrown by the constructor of Value
+// Strong Guarantee
+// Exception-Neutral
 template<typename FDIter>
 void treesort(FDIter first, FDIter last)
 {
