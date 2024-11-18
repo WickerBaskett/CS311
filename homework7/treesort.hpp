@@ -17,35 +17,23 @@
 #include <algorithm>
 // For std::move
 
-// treesort
-// Sort a given range using Treesort.
-// Pre:
-//     ???
-// Exception safety guarantee:
-//     ???
-template<typename FDIter>
-void treesort(FDIter first, FDIter last)
-{
-    // Value is the type that FDIter points to
-    using Value = typename std::iterator_traits<FDIter>::value_type;
-
-
-}
+#include <iostream>
+// For std::cout, std::endl
 
 // A node in a Binary Search Tree (BST)
 template<typename ValType>
 struct BSTreeNode {
-    std::unique_ptr<BSTreeNode> _left;
+    std::unique_ptr<BSTreeNode<ValType>> _left;
     ValType _data;
-    std::unique_ptr<BSTreeNode> _right;
+    std::unique_ptr<BSTreeNode<ValType>> _right;
 
     // 1- & 2- & 3- param ctor
     // _data is set to data (given). _left/_right is set to left/right, if given, or
     // nullptr if not.
     // No-Throw Guarantee
     explicit BSTreeNode(const ValType & data,
-                     std::unique_ptr<BSTreeNode> & left = nullptr,
-                     std::unique_ptr<BSTreeNode> & right = nullptr)
+                     std::unique_ptr<BSTreeNode> left = nullptr,
+                     std::unique_ptr<BSTreeNode> right = nullptr)
         :_data(data),
          _left(std::move(left)),
          _right(std::move(right))
@@ -54,7 +42,7 @@ struct BSTreeNode {
     // dctor
     // Iterative: avoid recursive destruction.
     // No-Throw Guarantee
-    ~LLNode2()
+    ~BSTreeNode()
     {
         // Needs to delete each node to the left and right side
     }
@@ -66,9 +54,10 @@ void insert(std::unique_ptr<BSTreeNode<Value>> & head,
 const Value & item) 
 {
     // BASE CASE
-    if !(head)
+    if (!head)
     {
-        head = std::make_unique<BSTreeNode<Value>>(item):
+        head = std::make_unique<BSTreeNode<Value>>(item);
+        return;
     }
 
     // RECURSIVE CASE
@@ -80,15 +69,15 @@ const Value & item)
     {
         insert(head->_right, item);
     }
-};
+}
 
-// Copy the contents of a BST to a the memory pointed to by first using
+// Copy the contents of a BST to the memory pointed to by first using
 //   an in-order traversal
 template<typename Value, typename FDIter>
 void inorder_traversal(const std::unique_ptr<BSTreeNode<Value>> & head,
         FDIter & first)
 {
-    if !(head)
+    if (!head)
     {
         return;
     }
@@ -99,7 +88,29 @@ void inorder_traversal(const std::unique_ptr<BSTreeNode<Value>> & head,
     std::advance(first, 1);
 
     inorder_traversal(head->_right, first);
-};
+}
+
+// treesort
+// Sort a given range using Treesort.
+// Pre:
+//     ???
+// Exception safety guarantee:
+//     ???
+template<typename FDIter>
+void treesort(FDIter first, FDIter last)
+{
+    // Value is the type that FDIter points to
+    using Value = typename std::iterator_traits<FDIter>::value_type;
+    
+    std::unique_ptr<BSTreeNode<Value>> head = nullptr;
+
+    for (FDIter iter = first; iter != last; std::advance(iter, 1))
+    {
+        insert(head, *iter);
+    }
+    
+    inorder_traversal(head, first);
+}
 
 #endif //#ifndef FILE_TREESORT_HPP_INCLUDED
 
