@@ -2,3 +2,4 @@ main
 *.o
 a.out
 test
+input.txt

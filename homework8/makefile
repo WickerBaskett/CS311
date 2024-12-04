@@ -1,4 +1,4 @@
 all: wordcount
 
 wordcount: wordcount.cpp
-	g++ wordcount.cpp -o word
+	g++ -std=c++17 wordcount.cpp -o word

@@ -10,8 +10,9 @@ using std::map;
 #include <string>
 using std::string;
 
-// To-Do: A line that does not have a line ending does not work
-
+#include <filesystem>
+namespace fs = std::filesystem;
+// For std::filesystem::is_directory
 
 int main(int argc, char** argv) {
     if (argc != 2) {
@@ -19,17 +20,30 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    const fs::path path_to_file = fs::path(argv[1]);
+    if (fs::is_directory(path_to_file)) {
+        cerr << "ERROR: Input file is a directory" << endl;
+        return 2;
+    }
+
     ifstream input(argv[1]);
 
     if (!input.is_open()) {
         cerr << "ERROR: Failed to open " << argv[1] << endl;
-        return 2;
+        return 3;
     }
 
     map<string, int> table;
     string line;
     string key;
     while (std::getline(input, line)) {
+        if (!input) {
+            if (input.eof()) {
+                break;
+            }
+            cerr << "ERROR: Failed to read from file" << endl;
+            return 4;
+        }
         for (auto let : line) {
             if (let != ' ') {
                 key += let;
